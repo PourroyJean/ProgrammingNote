@@ -1,0 +1,9 @@
+=========================
+Coucou dans les exercices
+=========================
+
+.. toctree::
+   :maxdepth: 1
+
+   knlBand
+

@@ -1,0 +1,181 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>ENONCE &#8212; documentation Notes Jean 1</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/translations.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Recherche" href="../search.html" />
+    <link rel="prev" title="PYTHON PROGRAMMING FOR DATA ANALYSIS" href="../Programmation/PythonNotebook.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="enonce">
+<span id="enonce"></span><h1>ENONCE<a class="headerlink" href="#enonce" title="Lien permanent vers ce titre">¶</a></h1>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="n">stream</span> <span class="p">(){</span>
+    <span class="n">times</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">mysecond</span><span class="p">();</span>
+    <span class="kt">double</span> <span class="n">t1</span><span class="o">=</span><span class="n">dml_micros</span><span class="p">();</span>
+        
+    <span class="cp">#pragma vector nontemporal</span>
+    <span class="cp">#pragma omp parallel for</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">j</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">j</span><span class="o">&lt;</span><span class="n">STREAM_ARRAY_SIZE</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span>
+        <span class="n">a</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">b</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">+</span><span class="n">scalar</span><span class="o">*</span><span class="n">c</span><span class="p">[</span><span class="n">j</span><span class="p">];</span>
+        
+    <span class="n">times</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">mysecond</span><span class="p">()</span> <span class="o">-</span> <span class="n">times</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="n">k</span><span class="p">];</span>
+    <span class="kt">double</span> <span class="n">t2</span><span class="o">=</span><span class="n">dml_micros</span><span class="p">()</span><span class="o">-</span><span class="n">t1</span><span class="p">;</span>
+    <span class="kt">double</span> <span class="n">SI</span><span class="o">=</span><span class="n">STREAM_ARRAY_SIZE</span><span class="o">*</span><span class="mf">8.0</span><span class="o">*</span><span class="mf">3.0</span><span class="p">;</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;_TRIAD_ %1.0lf %1.0lf %1.3lf</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="n">SI</span><span class="p">,</span><span class="n">t2</span><span class="p">,</span><span class="n">SI</span><span class="o">/</span><span class="mf">1000.0</span><span class="o">/</span><span class="n">t2</span><span class="p">);</span>
+ <span class="p">}</span>
+</pre></div>
+</div>
+<div class="section" id="compilation">
+<span id="compilation"></span><h2>Compilation<a class="headerlink" href="#compilation" title="Lien permanent vers ce titre">¶</a></h2>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">icc</span> <span class="o">-</span><span class="n">O3</span> <span class="o">-</span><span class="n">xMIC</span><span class="o">-</span><span class="n">AVX512</span> <span class="o">-</span><span class="n">qopenmp</span> <span class="o">-</span><span class="n">DNTIMES</span><span class="o">=</span><span class="mi">1000</span> <span class="o">-</span><span class="n">DSTREAM_ARRAY_SIZE</span><span class="o">=</span><span class="mi">219521024</span> <span class="o">-</span><span class="n">DOFFSET</span><span class="o">=</span><span class="mi">0</span> <span class="o">-</span><span class="n">DARRAY_ALIGNMENT</span><span class="o">=</span><span class="mi">524288</span>  <span class="o">-</span><span class="n">o</span> <span class="n">stream</span> <span class="n">stream</span><span class="o">.</span><span class="n">c</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="output">
+<span id="output"></span><h2>Output<a class="headerlink" href="#output" title="Lien permanent vers ce titre">¶</a></h2>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">...</span>
+        <span class="n">Nb_bit_total</span>    <span class="n">Time_us</span>     <span class="n">BW</span>
+<span class="n">_TRIAD_</span> <span class="mi">2400000000</span>      <span class="mi">39797</span>       <span class="mf">60.306</span>
+<span class="n">_TRIAD_</span> <span class="mi">2400000000</span>      <span class="mi">39647</span>       <span class="mf">60.534</span>
+<span class="n">_TRIAD_</span> <span class="mi">2400000000</span>      <span class="mi">39666</span>       <span class="mf">60.505</span>
+<span class="o">...</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="bandwidth">
+<span id="bandwidth"></span><h2>Bandwidth<a class="headerlink" href="#bandwidth" title="Lien permanent vers ce titre">¶</a></h2>
+<p>&#8211; image &#8211;</p>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="probleme-est-ce-que-tout-va-bien">
+<span id="probleme-est-ce-que-tout-va-bien"></span><h1>Probleme : Est ce que tout va bien ?<a class="headerlink" href="#probleme-est-ce-que-tout-va-bien" title="Lien permanent vers ce titre">¶</a></h1>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">-</span> <span class="n">En</span> <span class="n">regardant</span> <span class="n">la</span> <span class="n">bandwidth</span><span class="p">:</span>
+    <span class="o">-</span> <span class="n">Le</span> <span class="n">programme</span> <span class="n">donne</span> <span class="n">un</span> <span class="n">bande</span> <span class="n">passante</span> <span class="n">de</span> <span class="o">~</span><span class="mf">60.3</span> <span class="n">GB</span><span class="o">/</span><span class="n">s</span> <span class="n">en</span> <span class="n">divisant</span> <span class="n">la</span> <span class="n">taille</span> <span class="n">du</span> <span class="n">tableau</span> <span class="n">par</span> <span class="n">le</span> <span class="n">temps</span> <span class="n">d</span><span class="s1">&#39;exécution. C&#39;</span><span class="n">est</span> <span class="n">le</span> <span class="n">bande</span> <span class="n">passante</span> <span class="n">en</span> <span class="n">lecture</span><span class="p">,</span> <span class="n">pour</span> <span class="n">vérifier</span> <span class="n">que</span> <span class="n">la</span> <span class="n">bande</span> <span class="n">passante</span> <span class="n">est</span> <span class="n">saturée</span><span class="p">,</span> <span class="n">on</span> <span class="n">peut</span> <span class="n">regarder</span> <span class="n">la</span> <span class="n">répartition</span> <span class="n">Read</span><span class="o">/</span><span class="n">Write</span><span class="o">.</span>
+    <span class="o">-</span> <span class="n">L</span><span class="s1">&#39;outils de Fred donne aggrégée de 84 GB/s. La maximum théorique pour cette architecture. </span>
+</pre></div>
+</div>
+<div class="section" id="tout-vas-bien-sauf-si">
+<span id="tout-vas-bien-sauf-si"></span><h2>Tout vas bien, sauf si...<a class="headerlink" href="#tout-vas-bien-sauf-si" title="Lien permanent vers ce titre">¶</a></h2>
+<p>On remarque que le ratio entre la lecture et l&#8217;écriture est de 1 écriture pour 3 lectures avec l&#8217;outil de Fred. Si on regarde le code, on voit bien que les trois matrice sont lues et que seule &#8216;a&#8217; est écrit:</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="p">...</span>
+    <span class="cp">#pragma vector nontemporal</span>
+    <span class="cp">#pragma omp parallel for</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">j</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">j</span><span class="o">&lt;</span><span class="n">STREAM_ARRAY_SIZE</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span>
+        <span class="n">a</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">b</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">+</span><span class="n">scalar</span><span class="o">*</span><span class="n">c</span><span class="p">[</span><span class="n">j</span><span class="p">];</span>
+<span class="p">...</span>
+</pre></div>
+</div>
+<p>Cependant, lire la matrice &#8216;a&#8217; est inutile, car on ne fait que l&#8217;écrire. Le compilateur n&#8217;a pas l&#8217;air de le comprendre et pour cela Patrick a ajouté l&#8217;option <strong>#pragma vector nontemporal</strong>. Ce #pragma devrait dire au processeur de ne pas charger la donné pour l&#8217;écrire, or cela ne semble pas fonctionner. En lisant un documentation Intel, on peut lire qu&#8217;il y a deux façon de forcer un tel comportement:</p>
+<ul class="simple">
+<li>User has specified a nontemporal pragma on the loop to mark the vector-stores as streaming #pragma vector nontemporal</li>
+<li>User has specified the compiler option “-opt-streaming-stores always” to force marking ALL aligned vector-stores as nontemporal</li>
+</ul>
+<p>Il semble qu&#8217;en ayant ajouté la ligne suivante à la compilation, les performances soient bien les bonnes:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">icc</span> <span class="o">-</span><span class="n">O3</span> <span class="o">-</span><span class="n">qopt</span><span class="o">-</span><span class="n">streaming</span><span class="o">-</span><span class="n">stores</span><span class="o">=</span><span class="n">always</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table des Matières</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">ENONCE</a><ul>
+<li><a class="reference internal" href="#compilation">Compilation</a></li>
+<li><a class="reference internal" href="#output">Output</a></li>
+<li><a class="reference internal" href="#bandwidth">Bandwidth</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#probleme-est-ce-que-tout-va-bien">Probleme : Est ce que tout va bien ?</a><ul>
+<li><a class="reference internal" href="#tout-vas-bien-sauf-si">Tout vas bien, sauf si...</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="../Programmation/PythonNotebook.html" title="Chapitre précédent">PYTHON PROGRAMMING FOR DATA ANALYSIS</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>Cette page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/Exercices/knlBand.md.txt"
+            rel="nofollow">Montrer le code source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Recherche rapide</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Jean Pourroy.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
+      
+      |
+      <a href="../_sources/Exercices/knlBand.md.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

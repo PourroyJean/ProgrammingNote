@@ -1,0 +1,33 @@
+.. Notes Jean documentation master file, created by
+   sphinx-quickstart on Fri May 12 14:54:18 2017.
+   You can adapt this file completely to your liking, but it should at least
+   contain the root `toctree` directive.
+
+La programmation
+================
+
+Ici sont gardés des notes et des cheat sheet de différents langages de programmation.
+
+* :doc:`Python </doc/Programmation/index`
+
+
+
+
+Quelques exercices
+==================
+
+Ici sont répertoriés les exercices, les discussions ou les problêmes rencontrés durant notre travail.
+Cette section permet de rassembler cet ensemble de connaissances car le travail d'un ingénieur en optimisation de performances passe d'abord par l'expérience.
+
+* :doc:`Les exercices </doc/Exercices/index>` répertorie certains d'entre eux.
+
+
+
+
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
