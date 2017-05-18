@@ -1,0 +1,282 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Sujet &#8212; documentation Notes Jean 1</title>
+    
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/translations.js"></script>
+    <link rel="search" title="Recherche" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="sujet">
+<span id="sujet"></span><h1>Sujet<a class="headerlink" href="#sujet" title="Lien permanent vers ce titre">¶</a></h1>
+<p>Suppose you are the CEO of a
+restaurant franchise and are considering different cities for opening a new
+outlet. The chain already has trucks in various cities and you have data for
+profits and populations from the cities. <strong>You would like to use this data to help you select which city to expand
+to next</strong>
+The file ex1data1.txt contains the dataset for our linear regression problem. The first column is the population of a city and the second column is the profit of a food truck in that city.</p>
+<div class="section" id="loading-and-ploting-data">
+<span id="loading-and-ploting-data"></span><h2>Loading and ploting data<a class="headerlink" href="#loading-and-ploting-data" title="Lien permanent vers ce titre">¶</a></h2>
+<div class="highlight-octave"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="p">=</span> <span class="nb">load</span><span class="p">(</span><span class="s">&#39;ex1data1.txt&#39;</span><span class="p">);</span> <span class="c">% read comma separated data</span>
+<span class="n">X</span> <span class="p">=</span> <span class="n">data</span><span class="p">(:,</span> <span class="mi">1</span><span class="p">);</span> 
+<span class="n">y</span> <span class="p">=</span> <span class="n">data</span><span class="p">(:,</span> <span class="mi">2</span><span class="p">);</span>
+<span class="n">m</span> <span class="p">=</span> <span class="nb">length</span><span class="p">(</span><span class="n">y</span><span class="p">);</span>
+</pre></div>
+</div>
+<div class="highlight-octave"><div class="highlight"><pre><span></span><span class="nb">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="s">&#39;rx&#39;</span><span class="p">);</span>
+<span class="nb">ylabel</span><span class="p">(</span><span class="s">&#39;Profit in $10,000s&#39;</span><span class="p">);</span>
+<span class="nb">xlabel</span><span class="p">(</span><span class="s">&#39;Population of City in 10,000s&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p><img alt="png" src="../../../_images/Exercice_1_3_01.png" /></p>
+</div>
+</div>
+<div class="section" id="computing-the-cost">
+<span id="computing-the-cost"></span><h1>Computing the cost<a class="headerlink" href="#computing-the-cost" title="Lien permanent vers ce titre">¶</a></h1>
+<p>The objective of linear regression is to minimize the cost function:
+<img alt="optional caption text" src="../../../_images/J.png" /></p>
+<div class="section" id="initialisation">
+<span id="initialisation"></span><h2>Initialisation<a class="headerlink" href="#initialisation" title="Lien permanent vers ce titre">¶</a></h2>
+<p>we add another dimension to our data to accommodate the θ0 intercept term. We also initialize the initial parameters to 0 and the learning rate alpha to 0.01</p>
+<div class="highlight-octave"><div class="highlight"><pre><span></span><span class="n">X</span> <span class="p">=</span> <span class="p">[</span><span class="nb">ones</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">data</span><span class="p">(:,</span><span class="mi">1</span><span class="p">)];</span> <span class="c">% Add a column of ones to x</span>
+<span class="n">theta</span> <span class="p">=</span> <span class="nb">zeros</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>         <span class="c">% initialize fitting parameters Theta 0 et Theta 1 = 0</span>
+
+<span class="c">% Some gradient descent settings</span>
+<span class="n">iterations</span> <span class="p">=</span> <span class="mi">1500</span><span class="p">;</span>
+<span class="n">alpha</span> <span class="p">=</span> <span class="mf">0.01</span><span class="p">;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="cost-function">
+<span id="cost-function"></span><h2>Cost function<a class="headerlink" href="#cost-function" title="Lien permanent vers ce titre">¶</a></h2>
+<div class="highlight-octave"><div class="highlight"><pre><span></span><span class="k">function</span><span class="w"> </span>J <span class="p">=</span><span class="w"> </span><span class="nf">computeCost</span><span class="p">(</span>X, y, theta<span class="p">)</span><span class="w"></span>
+<span class="c">%COMPUTECOST Compute cost for linear regression</span>
+<span class="c">%   J = COMPUTECOST(X, y, theta) computes the cost of using theta as the</span>
+<span class="c">%   parameter for linear regression to fit the data points in X and y</span>
+<span class="c">% Initialize some useful values</span>
+<span class="n">m</span> <span class="p">=</span> <span class="nb">length</span><span class="p">(</span><span class="n">y</span><span class="p">);</span> <span class="c">% number of training examples</span>
+
+<span class="n">J</span> <span class="p">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">m</span><span class="p">)</span> <span class="o">*</span> <span class="nb">sum</span><span class="p">(((</span><span class="n">X</span> <span class="o">*</span> <span class="n">theta</span><span class="p">)</span> <span class="o">-</span> <span class="n">y</span><span class="p">)</span> <span class="o">.^</span> <span class="mi">2</span><span class="p">);</span>
+<span class="k">end</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="gradient-descent">
+<span id="gradient-descent"></span><h1>Gradient descent<a class="headerlink" href="#gradient-descent" title="Lien permanent vers ce titre">¶</a></h1>
+<p><img alt="optional caption text" src="../../../_images/rep.png" /></p>
+<div class="highlight-octave"><div class="highlight"><pre><span></span><span class="k">function</span><span class="w"> </span>[theta, J_history] <span class="p">=</span><span class="w"> </span><span class="nf">gradientDescent</span><span class="p">(</span>X, y, theta, alpha, num_iters<span class="p">)</span><span class="w"></span>
+<span class="c">%GRADIENTDESCENT Performs gradient descent to learn theta</span>
+<span class="c">%   theta = GRADIENTDESCENT(X, y, theta, alpha, num_iters) updates theta by </span>
+<span class="c">%   taking num_iters gradient steps with learning rate alpha</span>
+
+<span class="c">% Initialize some useful values</span>
+<span class="n">m</span> <span class="p">=</span> <span class="nb">length</span><span class="p">(</span><span class="n">y</span><span class="p">);</span> <span class="c">% number of training examples</span>
+<span class="n">J_history</span> <span class="p">=</span> <span class="nb">zeros</span><span class="p">(</span><span class="n">num_iters</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+
+    <span class="k">for</span> <span class="n">iter</span> <span class="p">=</span> <span class="mi">1</span><span class="p">:</span><span class="n">num_iters</span>
+
+        <span class="n">t1</span> <span class="p">=</span> <span class="n">theta</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="n">alpha</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">m</span><span class="p">)</span> <span class="o">*</span> <span class="nb">sum</span><span class="p">(((</span><span class="n">X</span> <span class="o">*</span> <span class="n">theta</span><span class="p">)</span> <span class="o">-</span> <span class="n">y</span><span class="p">)</span> <span class="o">.*</span> <span class="n">X</span><span class="p">(:,</span> <span class="mi">1</span><span class="p">));</span>
+        <span class="n">t2</span> <span class="p">=</span> <span class="n">theta</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="n">alpha</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">m</span><span class="p">)</span> <span class="o">*</span> <span class="nb">sum</span><span class="p">(((</span><span class="n">X</span> <span class="o">*</span> <span class="n">theta</span><span class="p">)</span> <span class="o">-</span> <span class="n">y</span><span class="p">)</span> <span class="o">.*</span> <span class="n">X</span><span class="p">(:,</span> <span class="mi">2</span><span class="p">));</span>
+
+        <span class="c">% Feed our new theta values before computing cost.</span>
+        <span class="c">% Not done inline </span>
+        <span class="n">theta</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="p">=</span> <span class="n">t1</span><span class="p">;</span>
+        <span class="n">theta</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="p">=</span> <span class="n">t2</span><span class="p">;</span>
+
+        <span class="c">% Save the cost J in every iteration    </span>
+        <span class="n">J_history</span><span class="p">(</span><span class="n">iter</span><span class="p">)</span> <span class="p">=</span> <span class="n">computeCost</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">theta</span><span class="p">);</span>
+
+    <span class="k">end</span>
+
+<span class="k">end</span>
+</pre></div>
+</div>
+<div class="section" id="test-the-gradient-descent">
+<span id="test-the-gradient-descent"></span><h2>Test the gradient descent<a class="headerlink" href="#test-the-gradient-descent" title="Lien permanent vers ce titre">¶</a></h2>
+<div class="highlight-octave"><div class="highlight"><pre><span></span><span class="c">% run gradient descent</span>
+<span class="n">theta</span> <span class="p">=</span> <span class="n">gradientDescent</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">iterations</span><span class="p">);</span>
+
+<span class="c">% print theta to screen</span>
+<span class="nb">fprintf</span><span class="p">(</span><span class="s">&#39;Theta found by gradient descent:\n&#39;</span><span class="p">);</span>
+<span class="nb">fprintf</span><span class="p">(</span><span class="s">&#39;%f\n&#39;</span><span class="p">,</span> <span class="n">theta</span><span class="p">);</span>
+</pre></div>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Theta</span> <span class="n">found</span> <span class="n">by</span> <span class="n">gradient</span> <span class="n">descent</span><span class="p">:</span>
+<span class="o">-</span><span class="mf">3.630291</span>
+<span class="mf">1.166362</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="ploting-the-resulting-model">
+<span id="ploting-the-resulting-model"></span><h2>Ploting the resulting model<a class="headerlink" href="#ploting-the-resulting-model" title="Lien permanent vers ce titre">¶</a></h2>
+<div class="highlight-octave"><div class="highlight"><pre><span></span><span class="nb">plot</span><span class="p">(</span><span class="n">X</span><span class="p">(:,</span><span class="mi">2</span><span class="p">),</span> <span class="n">y</span><span class="p">,</span> <span class="s">&#39;rx&#39;</span><span class="p">);</span>  <span class="c">%take the second column as we have added a extra one</span>
+<span class="nb">hold</span> <span class="n">on</span><span class="p">;</span>
+<span class="nb">plot</span><span class="p">(</span><span class="n">X</span><span class="p">(:,</span><span class="mi">2</span><span class="p">),</span> <span class="n">X</span><span class="o">*</span><span class="n">theta</span><span class="p">,</span> <span class="s">&#39;-&#39;</span><span class="p">)</span>
+<span class="nb">legend</span><span class="p">(</span><span class="s">&#39;Training data&#39;</span><span class="p">,</span> <span class="s">&#39;Linear regression&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><img alt="png" src="../../../_images/Exercice_1_13_01.png" /></p>
+</div>
+<div class="section" id="use-the-model-to-predict-something">
+<span id="use-the-model-to-predict-something"></span><h2>Use the model to predict something<a class="headerlink" href="#use-the-model-to-predict-something" title="Lien permanent vers ce titre">¶</a></h2>
+<div class="highlight-octave"><div class="highlight"><pre><span></span><span class="c">% Predict values for population sizes of 35,000 and 70,000</span>
+<span class="n">predict1</span> <span class="p">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mf">3.5</span><span class="p">]</span> <span class="o">*</span><span class="n">theta</span><span class="p">;</span>
+<span class="nb">fprintf</span><span class="p">(</span><span class="s">&#39;For population = 35,000, we predict a profit of %f\n&#39;</span><span class="p">,</span> <span class="n">predict1</span><span class="o">*</span><span class="mi">10000</span><span class="p">);</span>
+<span class="n">predict2</span> <span class="p">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">7</span><span class="p">]</span> <span class="o">*</span> <span class="n">theta</span><span class="p">;</span>
+<span class="nb">fprintf</span><span class="p">(</span><span class="s">&#39;For population = 70,000, we predict a profit of %f\n&#39;</span><span class="p">,</span> <span class="n">predict2</span><span class="o">*</span><span class="mi">10000</span><span class="p">);</span>
+</pre></div>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">For</span> <span class="n">population</span> <span class="o">=</span> <span class="mi">35</span><span class="p">,</span><span class="mi">000</span><span class="p">,</span> <span class="n">we</span> <span class="n">predict</span> <span class="n">a</span> <span class="n">profit</span> <span class="n">of</span> <span class="mf">4519.767868</span>
+<span class="n">For</span> <span class="n">population</span> <span class="o">=</span> <span class="mi">70</span><span class="p">,</span><span class="mi">000</span><span class="p">,</span> <span class="n">we</span> <span class="n">predict</span> <span class="n">a</span> <span class="n">profit</span> <span class="n">of</span> <span class="mf">45342.450129</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="visualizing-j">
+<span id="visualizing-j"></span><h2>Visualizing J(θ)<a class="headerlink" href="#visualizing-j" title="Lien permanent vers ce titre">¶</a></h2>
+<p><img alt="optional caption text" src="../../../_images/der.png" /></p>
+<div class="highlight-octave"><div class="highlight"><pre><span></span><span class="c">% Grid over which we will calculate J</span>
+<span class="n">theta0_vals</span> <span class="p">=</span> <span class="nb">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">);</span>
+<span class="n">theta1_vals</span> <span class="p">=</span> <span class="nb">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">100</span><span class="p">);</span>
+
+<span class="c">% initialize J_vals to a matrix of 0&#39;s</span>
+<span class="n">J_vals</span> <span class="p">=</span> <span class="nb">zeros</span><span class="p">(</span><span class="nb">length</span><span class="p">(</span><span class="n">theta0_vals</span><span class="p">),</span> <span class="nb">length</span><span class="p">(</span><span class="n">theta1_vals</span><span class="p">));</span>
+
+<span class="c">% Fill out J_vals</span>
+<span class="k">for</span> <span class="n">i</span> <span class="p">=</span> <span class="mi">1</span><span class="p">:</span><span class="nb">length</span><span class="p">(</span><span class="n">theta0_vals</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="p">=</span> <span class="mi">1</span><span class="p">:</span><span class="nb">length</span><span class="p">(</span><span class="n">theta1_vals</span><span class="p">)</span>
+      <span class="n">t</span> <span class="p">=</span> <span class="p">[</span><span class="n">theta0_vals</span><span class="p">(</span><span class="n">i</span><span class="p">);</span> <span class="n">theta1_vals</span><span class="p">(</span><span class="n">j</span><span class="p">)];</span>
+      <span class="n">J_vals</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">)</span> <span class="p">=</span> <span class="n">computeCost</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">t</span><span class="p">);</span>
+    <span class="k">end</span>
+<span class="k">end</span>
+
+
+<span class="c">% Because of the way meshgrids work in the surf command, we need to</span>
+<span class="c">% transpose J_vals before calling surf, or else the axes will be flipped</span>
+<span class="n">J_vals</span> <span class="p">=</span> <span class="n">J_vals</span><span class="o">&#39;</span><span class="p">;</span>
+<span class="c">% Surface plot</span>
+<span class="nb">figure</span><span class="p">;</span>
+<span class="nb">surf</span><span class="p">(</span><span class="n">theta0_vals</span><span class="p">,</span> <span class="n">theta1_vals</span><span class="p">,</span> <span class="n">J_vals</span><span class="p">)</span>
+<span class="nb">xlabel</span><span class="p">(</span><span class="s">&#39;\theta_0&#39;</span><span class="p">);</span> <span class="nb">ylabel</span><span class="p">(</span><span class="s">&#39;\theta_1&#39;</span><span class="p">);</span>
+
+<span class="c">% Contour plot</span>
+<span class="nb">figure</span><span class="p">;</span>
+<span class="c">% Plot J_vals as 15 contours spaced logarithmically between 0.01 and 100</span>
+<span class="nb">contour</span><span class="p">(</span><span class="n">theta0_vals</span><span class="p">,</span> <span class="n">theta1_vals</span><span class="p">,</span> <span class="n">J_vals</span><span class="p">,</span> <span class="nb">logspace</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">20</span><span class="p">))</span>
+<span class="nb">xlabel</span><span class="p">(</span><span class="s">&#39;\theta_0&#39;</span><span class="p">);</span> <span class="nb">ylabel</span><span class="p">(</span><span class="s">&#39;\theta_1&#39;</span><span class="p">);</span>
+<span class="nb">hold</span> <span class="n">on</span><span class="p">;</span>
+<span class="nb">plot</span><span class="p">(</span><span class="n">theta</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">theta</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="s">&#39;rx&#39;</span><span class="p">,</span> <span class="s">&#39;MarkerSize&#39;</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="s">&#39;LineWidth&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
+</pre></div>
+</div>
+<p><img alt="png" src="../../../_images/Exercice_1_17_01.png" /></p>
+<p><img alt="png" src="../../../_images/Exercice_1_17_11.png" /></p>
+<div class="highlight-octave"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../index.html">Table des Matières</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Sujet</a><ul>
+<li><a class="reference internal" href="#loading-and-ploting-data">Loading and ploting data</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#computing-the-cost">Computing the cost</a><ul>
+<li><a class="reference internal" href="#initialisation">Initialisation</a></li>
+<li><a class="reference internal" href="#cost-function">Cost function</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#gradient-descent">Gradient descent</a><ul>
+<li><a class="reference internal" href="#test-the-gradient-descent">Test the gradient descent</a></li>
+<li><a class="reference internal" href="#ploting-the-resulting-model">Ploting the resulting model</a></li>
+<li><a class="reference internal" href="#use-the-model-to-predict-something">Use the model to predict something</a></li>
+<li><a class="reference internal" href="#visualizing-j">Visualizing J(θ)</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>Cette page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../_sources/doc/Coursera/ex1/Exercice_1.md.txt"
+            rel="nofollow">Montrer le code source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Recherche rapide</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Jean Pourroy.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
+      
+      |
+      <a href="../../../_sources/doc/Coursera/ex1/Exercice_1.md.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

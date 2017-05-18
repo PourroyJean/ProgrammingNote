@@ -3,13 +3,11 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-La programmation
-================
+==========================================
+Optimisations de programme - architectures
+==========================================
 
-Ici sont gardés des notes et des cheat sheet de différents langages de programmation.
-
-* :doc:`Python </doc/Programmation/index>`
-
+Site web utilisé pour la prise de notes concernant des langages de programmation, des astuces, des problèmes résolus recontré durant ma thèse.
 
 
 
@@ -25,9 +23,32 @@ Cette section permet de rassembler cet ensemble de connaissances car le travail 
 
 
 
-Indices and tables
-==================
+=========================
+Machine Learning - Python
+=========================
 
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+
+Coursera - cours machine learning
+=================================
+Section utilisé pour la prise de notes des exercices de coursera:
+
+* :doc:`Coursera </doc/Coursera/index>`
+
+Programmation
+=============
+Ici sont gardés des notes et des cheat sheet de différents langages de programmation.
+
+* :doc:`Python </doc/Programmation/index>`
+
+
+
+
+
+
+
+.. Indices and tables
+   ==================
+  
+  * :ref:`genindex`
+  * :ref:`modindex`
+  * :ref:`search`

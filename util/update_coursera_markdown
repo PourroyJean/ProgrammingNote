@@ -1,0 +1,17 @@
+#!/bin/bash
+
+
+SCRIPT=$(readlink -f $0)
+SCRIPTPATH=`dirname $SCRIPT`
+
+
+COURSERA="$SCRIPTPATH/../sphinx/doc/Coursera"
+EXO_NUM="Exercice_01"
+NOTEBOOK_PATH=$COURSERA/$EXO_NUM/$EXO_NUM.ipynb
+
+echo $NOTEBOOK_PATH
+
+
+jupyter nbconvert $NOTEBOOK_PATH --to markdown --output-dir=$COURSERA/$EXO_NUM
+
+

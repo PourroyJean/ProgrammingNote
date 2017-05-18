@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Options &#8212; documentation Notes Jean 1</title>
+    <title>&lt;no title&gt; &#8212; documentation Notes Jean 1</title>
     
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -25,7 +25,6 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <script type="text/javascript" src="_static/translations.js"></script>
-    <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Recherche" href="search.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
@@ -42,129 +41,13 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <p>This application is used to convert notebook files (*.ipynb) to various other
-formats.</p>
-<p>WARNING: THE COMMANDLINE INTERFACE MAY CHANGE IN FUTURE RELEASES.</p>
-<div class="section" id="options">
-<span id="options"></span><h1>Options<a class="headerlink" href="#options" title="Lien permanent vers ce titre">¶</a></h1>
-<p>Arguments that take values are actually convenience aliases to full
-Configurables, whose aliases are listed on the help line. For more information
-on full configurables, see &#8216;&#8211;help-all&#8217;.</p>
-<p>&#8211;execute
-Execute the notebook prior to export.
-&#8211;allow-errors
-Continue notebook execution even if one of the cells throws an error and include the error message in the cell output (the default behaviour is to abort conversion). This flag is only relevant if &#8216;&#8211;execute&#8217; was specified, too.
-&#8211;stdout
-Write notebook output to stdout instead of files.
-&#8211;stdin
-read a single notebook file from stdin. Write the resulting notebook with default basename &#8216;notebook.*&#8216;
-&#8211;inplace
-Run nbconvert in place, overwriting the existing notebook (only
-relevant when converting to notebook format)
--y
-Answer yes to any questions instead of prompting.
-&#8211;debug
-set log level to logging.DEBUG (maximize logging output)
-&#8211;generate-config
-generate default config file
-&#8211;nbformat=<Enum> (NotebookExporter.nbformat_version)
-Default: 4
-Choices: [1, 2, 3, 4]
-The nbformat version to write. Use this to downgrade notebooks.
-&#8211;output-dir=<Unicode> (FilesWriter.build_directory)
-Default: &#8216;&#8217;
-Directory to write output(s) to. Defaults to output to the directory of each
-notebook. To recover previous default behaviour (outputting to the current
-working directory) use . as the flag value.
-&#8211;writer=<DottedObjectName> (NbConvertApp.writer_class)
-Default: &#8216;FilesWriter&#8217;
-Writer class used to write the  results of the conversion
-&#8211;log-level=<Enum> (Application.log_level)
-Default: 30
-Choices: (0, 10, 20, 30, 40, 50, &#8216;DEBUG&#8217;, &#8216;INFO&#8217;, &#8216;WARN&#8217;, &#8216;ERROR&#8217;, &#8216;CRITICAL&#8217;)
-Set the log level by value or name.
-&#8211;reveal-prefix=<Unicode> (SlidesExporter.reveal_url_prefix)
-Default: u&#8217;&#8216;
-The URL prefix for reveal.js. This can be a a relative URL for a local copy
-of reveal.js, or point to a CDN.
-For speaker notes to work, a local reveal.js prefix must be used.
-&#8211;to=<Unicode> (NbConvertApp.export_format)
-Default: &#8216;html&#8217;
-The export format to be used, either one of the built-in formats, or a
-dotted object name that represents the import path for an <code class="docutils literal"><span class="pre">Exporter</span></code> class
-&#8211;template=<Unicode> (TemplateExporter.template_file)
-Default: u&#8217;&#8216;
-Name of the template file to use
-&#8211;output=<Unicode> (NbConvertApp.output_base)
-Default: &#8216;&#8217;
-overwrite base name use for output files. can only be used when converting
-one notebook at a time.
-&#8211;post=<DottedOrNone> (NbConvertApp.postprocessor_class)
-Default: u&#8217;&#8216;
-PostProcessor class used to write the results of the conversion
-&#8211;config=<Unicode> (JupyterApp.config_file)
-Default: u&#8217;&#8216;
-Full path of a config file.</p>
-<p>To see all available configurables, use <code class="docutils literal"><span class="pre">--help-all</span></code></p>
-</div>
-<div class="section" id="examples">
-<span id="examples"></span><h1>Examples<a class="headerlink" href="#examples" title="Lien permanent vers ce titre">¶</a></h1>
-<div class="highlight-default"><div class="highlight"><pre><span></span>The simplest way to use nbconvert is
-
-&gt; jupyter nbconvert mynotebook.ipynb
-
-which will convert mynotebook.ipynb to the default format (probably HTML).
-
-You can specify the export format with `--to`.
-Options include [&#39;asciidoc&#39;, &#39;custom&#39;, &#39;html&#39;, &#39;latex&#39;, &#39;markdown&#39;, &#39;notebook&#39;, &#39;pdf&#39;, &#39;python&#39;, &#39;rst&#39;, &#39;script&#39;, &#39;slides&#39;]
-
-&gt; jupyter nbconvert --to latex mynotebook.ipynb
-
-Both HTML and LaTeX support multiple output templates. LaTeX includes
-&#39;base&#39;, &#39;article&#39; and &#39;report&#39;.  HTML includes &#39;basic&#39; and &#39;full&#39;. You
-can specify the flavor of the format used.
-
-&gt; jupyter nbconvert --to html --template basic mynotebook.ipynb
-
-You can also pipe the output to stdout, rather than a file
-
-&gt; jupyter nbconvert mynotebook.ipynb --stdout
-
-PDF is generated via latex
-
-&gt; jupyter nbconvert mynotebook.ipynb --to pdf
-
-You can get (and serve) a Reveal.js-powered slideshow
-
-&gt; jupyter nbconvert myslides.ipynb --to slides --post serve
-
-Multiple notebooks can be given at the command line in a couple of 
-different ways:
-
-&gt; jupyter nbconvert notebook*.ipynb
-&gt; jupyter nbconvert notebook1.ipynb notebook2.ipynb
-
-or you can specify the notebooks list in a config file, containing::
-
-    c.NbConvertApp.notebooks = [&quot;my_notebook.ipynb&quot;]
-
-&gt; jupyter nbconvert --config mycfg.py
-</pre></div>
-</div>
-</div>
-
+  
 
           </div>
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-  <h3><a href="index.html">Table des Matières</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">Options</a></li>
-<li><a class="reference internal" href="#examples">Examples</a></li>
-</ul>
-<div class="relations">
+        <div class="sphinxsidebarwrapper"><div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>

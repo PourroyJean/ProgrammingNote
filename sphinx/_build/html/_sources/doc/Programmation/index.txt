@@ -3,6 +3,7 @@ Les notes de programmation
 ==========================
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 0
+   :titlesonly:
 
    PythonNotebook   

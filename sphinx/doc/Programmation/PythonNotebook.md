@@ -14,7 +14,8 @@ From basics to more sophisticated command for data visualisation
 
 
 
-# ---------  Requirement
+---
+## Requirement
 
 
 ```python
@@ -51,7 +52,8 @@ print (mInt, mFloat, mString, type(mConversion))
 
 
 
-# ------------------------------------ Lists --------------------
+---
+## Lists 
 
 
 
@@ -178,7 +180,8 @@ for index, area in enumerate(areas) :
     print("room " + str(index) + ": " + str(area))
 ```
 
-#  ------------------------------------ Numpy -----------------
+---
+##  Numpy
 the fundamental package for scientific computing with Python
 - The standard for storing numerical data
 - Used by other package
@@ -245,7 +248,7 @@ print(np.logical_or(my_house > 18.5,
     NameError: name 'np_baseball' is not defined
 
 
-## Importing data command
+### Importing data command
 
 
 ```python
@@ -310,7 +313,7 @@ print ( np_baseball * conversion)
      [   1880.   75200.]]
 
 
-## Some statistics tricks
+### Some statistics tricks
 
 
 ```python
@@ -383,7 +386,8 @@ print(np.random.randint(1, 7))
     6
 
 
-# -------------------------------- Matplotlib ----------------
+---
+##  Matplotlib 
 
 
 ```python
@@ -472,7 +476,8 @@ plt.show()
 ![png](PythonNotebook_files/PythonNotebook_45_0.png)
 
 
-# ----------------------------------------- Dictionaries --------------
+---
+##  Dictionaries
 Data structure key:value
 
 
@@ -530,7 +535,8 @@ print (europe)
     {'spain': {'capital': 'madrid', 'population': 46.77}, 'france': {'capital': 'paris', 'population': 66.03}, 'germany': {'capital': 'berlin', 'population': 80.62}, 'norway': {'capital': 'oslo', 'population': 5.084}, 'italy': {'capital': 'rome', 'population': 59.83}}
 
 
-# ----------------------------------------- PANDAS -----------------
+---
+##  PANDAS
 
 Allow to perform more complexe fonction on data array.
 - Multiple types datas array
@@ -587,7 +593,7 @@ df2 = xl.parse(0)            #By sheet Index
     ['2002', '2004']
 
 
-## DataFrame
+### DataFrame
 The single bracket version gives a Pandas Series, the double bracket version gives a Pandas DataFrame.
 
 
@@ -642,7 +648,7 @@ print(cars.iloc[0:3].to_string(index=False) )
              588          Japan        False
 
 
-## Loc et iloc
+### Loc et iloc
 Used to select lines and column
 
 - loc is label-based, which means that you have to specify rows and columns based on their row and column labels. 
@@ -695,7 +701,7 @@ print (cars.iloc[:,1], "\n --- --- ---")  #All lines, only first column
      --- --- ---
 
 
-#### multiple selection
+### multiple selection
 the result is the intersection
 
 
@@ -735,7 +741,7 @@ print(cars.loc[:, ['cars_per_cap', 'drives_right']])
     EG             45         True
 
 
-## Boolean Selection
+### Boolean Selection
 
 
 ```python
@@ -784,7 +790,7 @@ print (cars)
     EG             45          Egypt         True          EGYPT          egypt
 
 
-## Plot Dataframe
+### Plot Dataframe
 
 
 ```python
@@ -807,10 +813,10 @@ plt.show()
 ![png](PythonNotebook_files/PythonNotebook_68_1.png)
 
 
-# ----------------------------------------- IMPORTING DATA  -----------------
-Presenting an other way to open file (check pandas section)
-
-## Good practice: open in context 
+---
+##  IMPORTING DATA  
+Presenting an other way to open file (check pandas section).
+**Good practice: open in context**
 
 
 ```python
@@ -823,7 +829,7 @@ with open('cars.csv') as file:
     
 
 
-# Pickle Package
+### Pickle Package
 Pickling is the process whereby a Python object hierarchy is converted into a byte stream
 - Open and create serialized file
 
